@@ -1,26 +1,27 @@
 package org.example.model;
 
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
-import java.io.Serializable;
+import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
-public class Clothes implements Serializable {
+public class Clothes {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String name;
     private String type;
     private String size;
     private String color;
     private double price;
 
+    @ManyToMany(mappedBy = "clothes") // Связь с сущностью Customer
+    private List<Customer> customers = new ArrayList<>();
 
     public Clothes() {}
-
 
     public Clothes(String name, String type, String size, String color, double price) {
         this.name = name;
@@ -31,6 +32,14 @@ public class Clothes implements Serializable {
     }
 
     // Геттеры и сеттеры
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -71,10 +80,23 @@ public class Clothes implements Serializable {
         this.price = price;
     }
 
+    public List<Customer> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(List<Customer> customers) {
+        this.customers = customers;
+    }
 
     @Override
     public String toString() {
-        return String.format("Название: %s, Тип: %s, Размер: %s, Цвет: %s, Цена: $%.2f",
-                name, type, size, color, price);
+        return "Clothes{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", size='" + size + '\'' +
+                ", color='" + color + '\'' +
+                ", price=" + price +
+                '}';
     }
 }

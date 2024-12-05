@@ -3,33 +3,56 @@ package org.example.apphelpers;
 import org.example.interfaces.AppHelper;
 import org.example.interfaces.Input;
 import org.example.model.Customer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class CustomerAppHelper implements AppHelper<Customer>, Input {
+public class CustomerAppHelper implements AppHelper<Customer> {
 
-    @Override
-    public Customer create() {
-        System.out.print("Имя клиента: ");
-        String firstName = getString();
-        System.out.print("Фамилия клиента: ");
-        String lastName = getString();
+    private final Input input;
 
-        return new Customer(firstName, lastName);
+    @Autowired
+    public CustomerAppHelper(Input input) {
+        this.input = input;
     }
 
+    /**
+     * Метод для создания клиента.
+     */
     @Override
-    public boolean printList(List<Customer> customers) {
-        if (customers == null || customers.isEmpty()) {
+    public Customer create() {
+        try {
+            System.out.print("Введите имя клиента: ");
+            String firstName = input.getString();
+            System.out.print("Введите фамилию клиента: ");
+            String lastName = input.getString();
+
+            // Создаём и возвращаем объект Customer
+            return new Customer(firstName, lastName);
+        } catch (Exception e) {
+            System.out.println("Ошибка при создании клиента: " + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Метод для отображения списка клиентов.
+     */
+    @Override
+    public boolean printList(List<Customer> customerList) {
+        if (customerList == null || customerList.isEmpty()) {
             System.out.println("Список клиентов пуст.");
             return false;
         }
 
-        for (int i = 0; i < customers.size(); i++) {
-            Customer customer = customers.get(i);
-            System.out.printf("%d. %s %s%n", i + 1, customer.getFirstName(), customer.getLastName());
+        for (int i = 0; i < customerList.size(); i++) {
+            Customer customer = customerList.get(i);
+            System.out.printf("%d. Имя: %s, Фамилия: %s%n",
+                    i + 1,
+                    customer.getFirstName(),
+                    customer.getLastName());
         }
         return true;
     }

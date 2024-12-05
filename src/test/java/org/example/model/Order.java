@@ -3,7 +3,6 @@ package org.example.model;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Entity
 @Table(name = "orders") // Указываем имя таблицы

@@ -3,12 +3,20 @@ package org.example.apphelpers;
 import org.example.interfaces.AppHelper;
 import org.example.interfaces.Input;
 import org.example.model.Clothes;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class ClothingAppHelper implements AppHelper<Clothes>, Input {
+public class ClothingAppHelper implements AppHelper<Clothes> {
+
+    private final Input input;
+
+    @Autowired
+    public ClothingAppHelper(Input input) {
+        this.input = input;
+    }
 
     /**
      * Метод для создания одежды.
@@ -17,15 +25,15 @@ public class ClothingAppHelper implements AppHelper<Clothes>, Input {
     public Clothes create() {
         try {
             System.out.print("Введите название одежды: ");
-            String name = getString();
+            String name = input.getString();
             System.out.print("Введите тип одежды (например, футболка, куртка): ");
-            String type = getString();
+            String type = input.getString();
             System.out.print("Введите размер одежды (например, S, M, L, XL): ");
-            String size = getString();
+            String size = input.getString();
             System.out.print("Введите цвет одежды: ");
-            String color = getString();
+            String color = input.getString();
             System.out.print("Введите цену одежды: ");
-            double price = Double.parseDouble(getString());
+            double price = Double.parseDouble(input.getString());
 
             // Создаем и возвращаем объект Clothes
             return new Clothes(name, type, size, color, price);
