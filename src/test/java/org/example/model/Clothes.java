@@ -1,18 +1,27 @@
 package org.example.model;
 
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import java.io.Serializable;
 
+@Entity
 public class Clothes implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String name;
     private String type;
     private String size;
     private String color;
     private double price;
 
-    // Конструктор без параметров
+
     public Clothes() {}
 
-    // Конструктор с пятью параметрами
+
     public Clothes(String name, String type, String size, String color, double price) {
         this.name = name;
         this.type = type;

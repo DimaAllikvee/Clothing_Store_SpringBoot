@@ -14,10 +14,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class App implements CommandLineRunner {
 
-	private final Input input;
-	private final Service<Clothes> clothingService;
-	private final Service<Customer> customerService;
-	private final Service<Order> orderService;
+	 private final Input input;
+	 private final Service<Clothes> clothingService;
+	 private final Service<Customer> customerService;
+	 private final Service<Order> orderService;
 
 	@Autowired
 	public App(@Qualifier("clothingAppHelper") Input input, // Указываем конкретную реализацию Input

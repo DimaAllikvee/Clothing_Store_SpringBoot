@@ -1,9 +1,17 @@
 package org.example.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+
 import java.io.Serializable;
 import java.util.UUID;
-
+@Entity
 public class Customer implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private String firstName;
     private String lastName;

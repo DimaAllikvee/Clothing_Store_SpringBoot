@@ -6,6 +6,7 @@ import org.example.interfaces.Service;
 import org.example.model.Clothes;
 import org.example.model.Customer;
 import org.example.model.Order;
+import org.example.services.OrderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

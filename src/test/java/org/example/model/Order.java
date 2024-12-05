@@ -1,18 +1,31 @@
 package org.example.model;
 
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.UUID;
 
+@Entity
+@Table(name = "orders") // Указываем имя таблицы
 public class Order implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID) // Автоматическая генерация UUID
     private String id; // Уникальный идентификатор заказа
+
+    @ManyToOne(fetch = FetchType.LAZY) // Связь "многие к одному" с Clothes
+    @JoinColumn(name = "clothes_id", nullable = false)
     private Clothes clothes;
+
+    @ManyToOne(fetch = FetchType.LAZY) // Связь "многие к одному" с Customer
+    @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
+
+    @Column(name = "order_date", nullable = false)
     private LocalDate orderDate;
 
     // Конструктор
     public Order(Clothes clothes, Customer customer, LocalDate orderDate) {
-        this.id = UUID.randomUUID().toString(); // Генерация уникального ID
         this.clothes = clothes;
         this.customer = customer;
         this.orderDate = orderDate;
@@ -20,7 +33,6 @@ public class Order implements Serializable {
 
     // Конструктор без параметров
     public Order() {
-        this.id = UUID.randomUUID().toString(); // Генерация уникального ID
     }
 
     // Геттеры и сеттеры

@@ -36,6 +36,13 @@
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 
+		<!-- mariadb -->
+		<dependency>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+			<version>3.5.0</version>
+		</dependency>
+
 		<!-- Spring Boot Test Starter -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -72,6 +79,11 @@
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-junit-jupiter</artifactId>
 			<version>5.14.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

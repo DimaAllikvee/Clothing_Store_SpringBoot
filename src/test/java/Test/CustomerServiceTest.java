@@ -3,6 +3,7 @@ package Test;
 import org.example.interfaces.AppHelper;
 import org.example.interfaces.FileRepository;
 import org.example.model.Customer;
+import org.example.services.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

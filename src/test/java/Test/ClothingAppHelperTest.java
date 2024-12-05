@@ -1,5 +1,6 @@
 package Test;
 
+import org.example.apphelpers.ClothingAppHelper;
 import org.example.model.Clothes;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
