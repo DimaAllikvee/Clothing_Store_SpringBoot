@@ -28,6 +28,7 @@ public class App implements CommandLineRunner {
 			System.out.println("1. Добавить одежду");
 			System.out.println("2. Список одежды");
 			System.out.println("3. Редактировать одежду");
+			System.out.println("4. Удалить одежду");
 
 			System.out.print("Введите номер задачи: ");
 			int task = Integer.parseInt(input.getString());
@@ -62,6 +63,16 @@ public class App implements CommandLineRunner {
 					}
 					break;
 
+				case 4:
+					clothingService.print();
+					System.out.print("Введите ID одежды для удаления: ");
+					Long idToRemove = Long.parseLong(input.getString());
+					if (clothingService.remove(idToRemove)) {
+						System.out.println("Одежда успешно удалена.");
+					} else {
+						System.out.println("Не удалось удалить одежду. Убедитесь, что ID корректен.");
+					}
+					break;
 
 			}
 		} while (repeat);

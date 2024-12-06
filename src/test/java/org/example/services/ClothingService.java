@@ -7,6 +7,7 @@ import org.example.model.Clothes;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
+import java.util.Comparator;
 import java.util.List;
 
 @org.springframework.stereotype.Service
@@ -97,8 +98,26 @@ public class ClothingService implements Service<Clothes> {
 
     @Override
     public boolean remove(Long id) {
-        return false;
+        if (clothesRepository.existsById(id)) {
+            clothesRepository.deleteById(id);
+
+            // Пересчитываем позицию
+            List<Clothes> allClothes = clothesRepository.findAll();
+            for (int i = 0; i < allClothes.size(); i++) {
+                Clothes clothes = allClothes.get(i);
+                clothes.setPosition(i + 1); // Устанавливаем новую позицию
+            }
+            clothesRepository.saveAll(allClothes);
+
+            System.out.println("Одежда с ID " + id + " успешно удалена. Позиции пересчитаны.");
+            return true;
+        } else {
+            System.out.println("Ошибка: Одежда с ID " + id + " не найдена.");
+            return false;
+        }
     }
+
+
 
     @Override
     public Clothes findById(Long id) {
@@ -109,8 +128,11 @@ public class ClothingService implements Service<Clothes> {
     @Override
     public boolean print() {
         List<Clothes> clothesList = clothesRepository.findAll();
+        clothesList.sort(Comparator.comparing(Clothes::getPosition)); // Сортируем по `position`
+
         return clothingAppHelper.printList(clothesList);
     }
+
 
     @Override
     public List<Clothes> list() {

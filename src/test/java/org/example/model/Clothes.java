@@ -18,6 +18,10 @@ public class Clothes {
     private String color;
     private double price;
 
+
+    @Column
+    private Integer position;
+
     @ManyToMany(mappedBy = "clothes") // Связь с сущностью Customer
     private List<Customer> customers = new ArrayList<>();
 
@@ -87,6 +91,15 @@ public class Clothes {
     public void setCustomers(List<Customer> customers) {
         this.customers = customers;
     }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
 
     @Override
     public String toString() {
