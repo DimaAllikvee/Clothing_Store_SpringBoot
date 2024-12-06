@@ -34,6 +34,7 @@ public class App implements CommandLineRunner {
 			System.out.println("3. Редактировать одежду");
 			System.out.println("4. Удалить одежду");
 			System.out.println("5. Добавить клиента");
+			System.out.println("6. Список клиентов");
 
 			System.out.print("Введите номер задачи: ");
 			int task = Integer.parseInt(input.getString());
@@ -83,6 +84,9 @@ public class App implements CommandLineRunner {
 					} else {
 						System.out.println("Клиента добавить не удалось.");
 					}
+					break;
+				case 6:
+					customerService.print();
 					break;
 
 				default:
