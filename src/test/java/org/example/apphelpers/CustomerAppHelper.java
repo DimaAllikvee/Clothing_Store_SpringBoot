@@ -18,9 +18,10 @@ public class CustomerAppHelper implements AppHelper<Customer> {
         this.input = input;
     }
 
-    /**
-     * Метод для создания клиента.
-     */
+    public Input getInput() {
+        return this.input;
+    }
+
     @Override
     public Customer create() {
         try {
@@ -28,8 +29,6 @@ public class CustomerAppHelper implements AppHelper<Customer> {
             String firstName = input.getString();
             System.out.print("Введите фамилию клиента: ");
             String lastName = input.getString();
-
-            // Создаём и возвращаем объект Customer
             return new Customer(firstName, lastName);
         } catch (Exception e) {
             System.out.println("Ошибка при создании клиента: " + e.getMessage());
@@ -37,9 +36,6 @@ public class CustomerAppHelper implements AppHelper<Customer> {
         }
     }
 
-    /**
-     * Метод для отображения списка клиентов.
-     */
     @Override
     public boolean printList(List<Customer> customerList) {
         if (customerList == null || customerList.isEmpty()) {
@@ -57,3 +53,4 @@ public class CustomerAppHelper implements AppHelper<Customer> {
         return true;
     }
 }
+

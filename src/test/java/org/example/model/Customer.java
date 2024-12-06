@@ -14,7 +14,9 @@ public class Customer {
     private String firstName;
     private String lastName;
 
-    @ManyToMany
+
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
             name = "customer_clothes",
             joinColumns = @JoinColumn(name = "customer_id"),
@@ -22,6 +24,7 @@ public class Customer {
     )
     private List<Clothes> clothes = new ArrayList<>();
 
+    // Конструкторы
     public Customer() {}
 
     public Customer(String firstName, String lastName) {
@@ -29,6 +32,7 @@ public class Customer {
         this.lastName = lastName;
     }
 
+    // Геттеры и сеттеры
     public Long getId() {
         return id;
     }
@@ -61,12 +65,15 @@ public class Customer {
         this.clothes = clothes;
     }
 
+
+
     @Override
     public String toString() {
         return "Customer{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+
                 '}';
     }
 }

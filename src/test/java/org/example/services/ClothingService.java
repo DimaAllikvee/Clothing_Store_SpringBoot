@@ -6,8 +6,6 @@ import org.example.interfaces.Service;
 import org.example.model.Clothes;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
-import java.util.Comparator;
 import java.util.List;
 
 @org.springframework.stereotype.Service
@@ -52,9 +50,6 @@ public class ClothingService implements Service<Clothes> {
             return false;
         }
 
-
-
-        // Проверяем, существует ли одежда с данным ID в базе данных
         return clothesRepository.findById(clothes.getId()).map(existingClothes -> {
             try {
                 // Обновляем поля существующей одежды
@@ -95,21 +90,11 @@ public class ClothingService implements Service<Clothes> {
         });
     }
 
-
     @Override
     public boolean remove(Long id) {
         if (clothesRepository.existsById(id)) {
             clothesRepository.deleteById(id);
-
-            // Пересчитываем позицию
-            List<Clothes> allClothes = clothesRepository.findAll();
-            for (int i = 0; i < allClothes.size(); i++) {
-                Clothes clothes = allClothes.get(i);
-                clothes.setPosition(i + 1); // Устанавливаем новую позицию
-            }
-            clothesRepository.saveAll(allClothes);
-
-            System.out.println("Одежда с ID " + id + " успешно удалена. Позиции пересчитаны.");
+            System.out.println("Одежда с ID " + id + " успешно удалена.");
             return true;
         } else {
             System.out.println("Ошибка: Одежда с ID " + id + " не найдена.");
@@ -117,22 +102,16 @@ public class ClothingService implements Service<Clothes> {
         }
     }
 
-
-
     @Override
     public Clothes findById(Long id) {
         return clothesRepository.findById(id).orElse(null);
     }
 
-
     @Override
     public boolean print() {
         List<Clothes> clothesList = clothesRepository.findAll();
-        clothesList.sort(Comparator.comparing(Clothes::getPosition)); // Сортируем по `position`
-
         return clothingAppHelper.printList(clothesList);
     }
-
 
     @Override
     public List<Clothes> list() {

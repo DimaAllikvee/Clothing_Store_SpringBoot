@@ -3,7 +3,6 @@ package org.example.model;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 public class Clothes {
@@ -12,21 +11,20 @@ public class Clothes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String type;
-    private String size;
-    private String color;
-    private double price;
+    private String name; // Название одежды
+    private String type; // Тип одежды (например, футболка, куртка)
+    private String size; // Размер одежды (например, S, M, L, XL)
+    private String color; // Цвет одежды
+    private double price; // Цена одежды
 
 
-    @Column
-    private Integer position;
-
-    @ManyToMany(mappedBy = "clothes") // Связь с сущностью Customer
+    @ManyToMany(mappedBy = "clothes")
     private List<Customer> customers = new ArrayList<>();
 
+    // Конструктор без параметров
     public Clothes() {}
 
+    // Конструктор с параметрами
     public Clothes(String name, String type, String size, String color, double price) {
         this.name = name;
         this.type = type;
@@ -84,6 +82,8 @@ public class Clothes {
         this.price = price;
     }
 
+
+
     public List<Customer> getCustomers() {
         return customers;
     }
@@ -91,15 +91,6 @@ public class Clothes {
     public void setCustomers(List<Customer> customers) {
         this.customers = customers;
     }
-
-    public Integer getPosition() {
-        return position;
-    }
-
-    public void setPosition(Integer position) {
-        this.position = position;
-    }
-
 
     @Override
     public String toString() {

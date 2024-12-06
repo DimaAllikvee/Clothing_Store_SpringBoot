@@ -3,6 +3,7 @@ package org.example;
 import org.example.interfaces.Input;
 import org.example.interfaces.Service;
 import org.example.model.Clothes;
+import org.example.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,6 +18,9 @@ public class App implements CommandLineRunner {
 	@Autowired
 	private Service<Clothes> clothingService;
 
+	@Autowired
+	private Service<Customer> customerService; // Добавляем customerService
+
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println("------ Магазин верхней одежды с базой данных ------");
@@ -29,6 +33,7 @@ public class App implements CommandLineRunner {
 			System.out.println("2. Список одежды");
 			System.out.println("3. Редактировать одежду");
 			System.out.println("4. Удалить одежду");
+			System.out.println("5. Добавить клиента");
 
 			System.out.print("Введите номер задачи: ");
 			int task = Integer.parseInt(input.getString());
@@ -38,12 +43,11 @@ public class App implements CommandLineRunner {
 					repeat = false;
 					break;
 				case 1:
-					if (clothingService.add()){
+					if (clothingService.add()) {
 						System.out.println("Одежда добавлена.");
 					} else {
 						System.out.println("Одежду добавить не удалось.");
 					}
-
 					break;
 				case 2:
 					clothingService.print();
@@ -73,7 +77,16 @@ public class App implements CommandLineRunner {
 						System.out.println("Не удалось удалить одежду. Убедитесь, что ID корректен.");
 					}
 					break;
+				case 5:
+					if (customerService.add()) {
+						System.out.println("Клиент добавлен.");
+					} else {
+						System.out.println("Клиента добавить не удалось.");
+					}
+					break;
 
+				default:
+					System.out.println("Выбрана задача не из списка.");
 			}
 		} while (repeat);
 
