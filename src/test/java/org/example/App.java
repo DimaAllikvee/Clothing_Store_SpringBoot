@@ -35,6 +35,7 @@ public class App implements CommandLineRunner {
 			System.out.println("4. Удалить одежду");
 			System.out.println("5. Добавить клиента");
 			System.out.println("6. Список клиентов");
+			System.out.println("7. Редактировать клиента");
 
 			System.out.print("Введите номер задачи: ");
 			int task = Integer.parseInt(input.getString());
@@ -87,6 +88,20 @@ public class App implements CommandLineRunner {
 					break;
 				case 6:
 					customerService.print();
+					break;
+				case 7:
+					System.out.print("Введите ID клиента для редактирования: ");
+					Long customerId = Long.parseLong(input.getString());
+					Customer customerToEdit = customerService.findById(customerId);
+					if (customerToEdit != null) {
+						if (customerService.edit(customerToEdit)) {
+							System.out.println("Клиент отредактирован.");
+						} else {
+							System.out.println("Клиента отредактировать не удалось.");
+						}
+					} else {
+						System.out.println("Клиент с таким ID не найден.");
+					}
 					break;
 
 				default:
