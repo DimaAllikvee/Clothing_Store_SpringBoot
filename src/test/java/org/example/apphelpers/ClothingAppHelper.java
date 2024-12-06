@@ -18,6 +18,10 @@ public class ClothingAppHelper implements AppHelper<Clothes> {
         this.input = input;
     }
 
+    public Input getInput() {
+        return this.input;
+    }
+
     /**
      * Метод для создания одежды.
      */

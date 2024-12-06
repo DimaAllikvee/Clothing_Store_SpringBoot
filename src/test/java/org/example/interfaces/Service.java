@@ -9,4 +9,5 @@ public interface Service<T> {
     boolean remove(Long id);
     boolean print();
     List<T> list();
+    T findById(Long id);
 }

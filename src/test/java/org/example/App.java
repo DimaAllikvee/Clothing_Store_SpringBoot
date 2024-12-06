@@ -48,6 +48,20 @@ public class App implements CommandLineRunner {
 					clothingService.print();
 					break;
 				case 3:
+					System.out.print("Введите ID одежды для редактирования: ");
+					Long id = Long.parseLong(input.getString());
+					Clothes clothesToEdit = clothingService.findById(id); // Метод для поиска одежды по ID
+					if (clothesToEdit != null) {
+						if (clothingService.edit(clothesToEdit)) {
+							System.out.println("Одежда отредактирована.");
+						} else {
+							System.out.println("Одежду отредактировать не удалось.");
+						}
+					} else {
+						System.out.println("Одежда с таким ID не найдена.");
+					}
+					break;
+
 
 			}
 		} while (repeat);
