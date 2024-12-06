@@ -36,6 +36,7 @@ public class App implements CommandLineRunner {
 			System.out.println("5. Добавить клиента");
 			System.out.println("6. Список клиентов");
 			System.out.println("7. Редактировать клиента");
+			System.out.println("8. Удалить клиента");
 
 			System.out.print("Введите номер задачи: ");
 			int task = Integer.parseInt(input.getString());
@@ -101,6 +102,16 @@ public class App implements CommandLineRunner {
 						}
 					} else {
 						System.out.println("Клиент с таким ID не найден.");
+					}
+					break;
+				case 8:
+					customerService.print();
+					System.out.print("Введите ID клиента для удаления: ");
+					Long customerIdToRemove = Long.parseLong(input.getString());
+					if (customerService.remove(customerIdToRemove)) {
+						System.out.println("Клиент успешно удален.");
+					} else {
+						System.out.println("Не удалось удалить клиента. Убедитесь, что ID корректен.");
 					}
 					break;
 
