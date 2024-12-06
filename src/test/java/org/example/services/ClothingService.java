@@ -1,81 +1,67 @@
 package org.example.services;
 
-import jakarta.transaction.Transactional;
-import org.example.apphelpers.CustomerAppHelper;
-import org.example.interfaces.AppHelper;
+import org.example.apphelpers.ClothingAppHelper;
 import org.example.interfaces.ClothesRepository;
 import org.example.interfaces.Service;
-import org.example.interfaces.CustomerRepository;
 import org.example.model.Clothes;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
 import java.util.List;
 
-
 @org.springframework.stereotype.Service
 public class ClothingService implements Service<Clothes> {
 
-    @Autowired
-    private AppHelper<Clothes> clothesAppHelper;
+    private final ClothingAppHelper clothingAppHelper;
+    private final ClothesRepository clothesRepository;
 
     @Autowired
-    private CustomerAppHelper customerAppHelper;
+    public ClothingService(ClothingAppHelper clothingAppHelper, ClothesRepository clothesRepository) {
+        this.clothingAppHelper = clothingAppHelper;
+        this.clothesRepository = clothesRepository;
+    }
 
-    @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
-    private ClothesRepository clothesRepository;
-
-    @Transactional
     @Override
-    public boolean add(Clothes clothes) {
-        try {
+    public boolean add() {
+        Clothes clothes = clothingAppHelper.create();
+        if (clothes != null) {
             clothesRepository.save(clothes);
             System.out.println("Одежда добавлена: " + clothes);
             return true;
-        } catch (Exception e) {
-            System.err.println("Ошибка при добавлении одежды: " + e.getMessage());
-            return false;
         }
+        System.out.println("Ошибка: не удалось добавить одежду.");
+        return false;
+    }
+
+    @Override
+    public boolean add(Clothes clothes) {
+        if (clothes != null) {
+            clothesRepository.save(clothes);
+            System.out.println("Одежда добавлена через REST API: " + clothes);
+            return true;
+        }
+        System.out.println("Ошибка: не удалось добавить одежду через REST API.");
+        return false;
     }
 
     @Override
     public boolean edit(Clothes clothes) {
-        if (clothesRepository.existsById(clothes.getId())) {
-            clothesRepository.save(clothes);
-            return true;
-        }
-        System.out.println("Одежда с ID " + clothes.getId() + " не найдена.");
         return false;
     }
 
     @Override
     public boolean remove(Long id) {
-        if (clothesRepository.existsById(id)) {
-            clothesRepository.deleteById(id);
-            return true;
-        }
-        System.out.println("Одежда с ID " + id + " не найдена.");
         return false;
     }
 
     @Override
     public boolean print() {
-        List<Clothes> clothesList = list();
-        if (clothesList.isEmpty()) {
-            System.out.println("Список одежды пуст.");
-            return false;
-        }
-        clothesList.forEach(System.out::println);
-        return true;
+        List<Clothes> clothesList = clothesRepository.findAll();
+        return clothingAppHelper.printList(clothesList);
     }
 
     @Override
     public List<Clothes> list() {
         return clothesRepository.findAll();
     }
-
 }
-

@@ -26,6 +26,8 @@ public class App implements CommandLineRunner {
 			System.out.println("Список задач: ");
 			System.out.println("0. Выход");
 			System.out.println("1. Добавить одежду");
+			System.out.println("2. Список одежды");
+			System.out.println("3. Редактировать одежду");
 
 			System.out.print("Введите номер задачи: ");
 			int task = Integer.parseInt(input.getString());
@@ -35,27 +37,18 @@ public class App implements CommandLineRunner {
 					repeat = false;
 					break;
 				case 1:
-					System.out.print("Введите название одежды: ");
-					String name = input.getString();
-					System.out.print("Введите тип одежды: ");
-					String type = input.getString();
-					System.out.print("Введите размер одежды: ");
-					String size = input.getString();
-					System.out.print("Введите цвет одежды: ");
-					String color = input.getString();
-					System.out.print("Введите цену одежды: ");
-					double price = Double.parseDouble(input.getString());
-
-					Clothes clothes = new Clothes(name, type, size, color, price);
-					if (clothingService.add(clothes)) {
-						System.out.println("Одежда добавлена: " + clothes);
+					if (clothingService.add()){
+						System.out.println("Одежда добавлена.");
 					} else {
 						System.out.println("Одежду добавить не удалось.");
 					}
+
 					break;
-				default:
-					System.out.println("Выбрана задача не из списка!");
+				case 2:
+					clothingService.print();
 					break;
+				case 3:
+
 			}
 		} while (repeat);
 

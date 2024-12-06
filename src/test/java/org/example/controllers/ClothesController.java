@@ -18,14 +18,12 @@ public class ClothesController {
         this.clothingService = clothingService;
     }
 
-    // Добавление новой одежды в базу данных
     @PostMapping
     public String addClothes(@RequestBody Clothes clothes) {
-        clothingService.add(clothes); // Передаём объект `clothes` в сервис
+        clothingService.add(clothes); // Используем метод add с параметром
         return "Одежда успешно добавлена: " + clothes;
     }
 
-    // Получение всех записей из базы данных
     @GetMapping
     public List<Clothes> getAllClothes() {
         return clothingService.list();
