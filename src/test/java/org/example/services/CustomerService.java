@@ -1,11 +1,16 @@
 package org.example.services;
 
+import jakarta.transaction.Transactional;
 import org.example.apphelpers.CustomerAppHelper;
+import org.example.interfaces.ClothesRepository;
 import org.example.interfaces.CustomerRepository;
 import org.example.interfaces.Service;
+import org.example.model.Clothes;
 import org.example.model.Customer;
+import org.example.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @org.springframework.stereotype.Service
@@ -13,11 +18,13 @@ public class CustomerService implements Service<Customer> {
 
     private final CustomerAppHelper customerAppHelper;
     private final CustomerRepository customerRepository;
+    private final ClothesRepository clothesRepository;
 
     @Autowired
-    public CustomerService(CustomerAppHelper customerAppHelper, CustomerRepository customerRepository) {
+    public CustomerService(CustomerAppHelper customerAppHelper, CustomerRepository customerRepository, ClothesRepository clothesRepository) {
         this.customerAppHelper = customerAppHelper;
         this.customerRepository = customerRepository;
+        this.clothesRepository = clothesRepository;
     }
 
     @Override
@@ -103,4 +110,73 @@ public class CustomerService implements Service<Customer> {
     public List<Customer> list() {
         return customerRepository.findAll();
     }
+
+    @Override
+    @Transactional
+    public boolean placeOrder(Customer customer) {
+        if (customer == null) {
+            System.out.println("Ошибка: Клиент отсутствует.");
+            return false;
+        }
+
+        System.out.println("Оформление заказа для клиента: " + customer.getFirstName() + " " + customer.getLastName());
+
+        // Получаем доступную одежду
+        List<Clothes> availableClothes = clothesRepository.findAll();
+        if (availableClothes.isEmpty()) {
+            System.out.println("Нет доступной одежды для заказа.");
+            return false;
+        }
+
+        // Печатаем список одежды
+        System.out.println("Доступная одежда:");
+        for (int i = 0; i < availableClothes.size(); i++) {
+            Clothes clothes = availableClothes.get(i);
+            System.out.printf("%d. Название: %s, Тип: %s, Размер: %s, Цена: %.2f%n",
+                    i + 1, clothes.getName(), clothes.getType(), clothes.getSize(), clothes.getPrice());
+        }
+
+        System.out.print("Введите номера одежды для добавления в заказ (через запятую): ");
+        String input = customerAppHelper.getInput().getString();
+        String[] indices = input.split(",");
+
+        // Создаем заказы для выбранной одежды
+        List<Order> orders = new ArrayList<>();
+        for (String index : indices) {
+            try {
+                int itemIndex = Integer.parseInt(index.trim()) - 1;
+                if (itemIndex >= 0 && itemIndex < availableClothes.size()) {
+                    Clothes selectedClothes = availableClothes.get(itemIndex);
+
+                    // Создаем объект Order для каждой выбранной одежды
+                    Order order = new Order();
+                    order.setDescription("Заказ на " + selectedClothes.getName());
+                    order.setTotalPrice(selectedClothes.getPrice());
+                    order.setOrderDate(java.time.LocalDateTime.now());
+                    order.setCustomer(customer);
+
+                    orders.add(order);
+                } else {
+                    System.out.println("Неверный номер: " + (itemIndex + 1));
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Некорректный ввод: " + index);
+            }
+        }
+
+        if (orders.isEmpty()) {
+            System.out.println("Заказ не сформирован. Одежда не выбрана.");
+            return false;
+        }
+
+        // Сохраняем заказы в базе данных
+        for (Order order : orders) {
+            customer.getOrders().add(order); // Связываем заказ с клиентом
+        }
+
+        customerRepository.save(customer); // Сохраняем изменения клиента
+        System.out.println("Заказ успешно оформлен для клиента: " + customer.getFirstName() + " " + customer.getLastName());
+        return true;
+    }
 }
+

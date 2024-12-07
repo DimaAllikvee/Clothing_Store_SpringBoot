@@ -37,6 +37,7 @@ public class App implements CommandLineRunner {
 			System.out.println("6. Список клиентов");
 			System.out.println("7. Редактировать клиента");
 			System.out.println("8. Удалить клиента");
+			System.out.println("9. Оформить заказ");
 
 			System.out.print("Введите номер задачи: ");
 			int task = Integer.parseInt(input.getString());
@@ -114,6 +115,22 @@ public class App implements CommandLineRunner {
 						System.out.println("Не удалось удалить клиента. Убедитесь, что ID корректен.");
 					}
 					break;
+				case 9:
+					customerService.print();
+					System.out.print("Введите ID клиента для оформления заказа: ");
+					Long customerIdForOrder = Long.parseLong(input.getString());
+					Customer customerForOrder = customerService.findById(customerIdForOrder);
+					if (customerForOrder != null) {
+						if (customerService.placeOrder(customerForOrder)) {
+							System.out.println("Заказ успешно оформлен.");
+						} else {
+							System.out.println("Заказ оформить не удалось.");
+						}
+					} else {
+						System.out.println("Клиент с таким ID не найден.");
+					}
+					break;
+
 
 				default:
 					System.out.println("Выбрана задача не из списка.");

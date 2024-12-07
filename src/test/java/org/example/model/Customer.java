@@ -14,8 +14,6 @@ public class Customer {
     private String firstName;
     private String lastName;
 
-
-
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
             name = "customer_clothes",
@@ -23,6 +21,10 @@ public class Customer {
             inverseJoinColumns = @JoinColumn(name = "clothes_id")
     )
     private List<Clothes> clothes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> orders = new ArrayList<>();
+
 
     // Конструкторы
     public Customer() {}
@@ -65,7 +67,13 @@ public class Customer {
         this.clothes = clothes;
     }
 
+    public List<Order> getOrders() {
+        return orders;
+    }
 
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
 
     @Override
     public String toString() {
@@ -73,7 +81,8 @@ public class Customer {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-
+                ", clothes=" + clothes +
+                ", orders=" + orders +
                 '}';
     }
 }

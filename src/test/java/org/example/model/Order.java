@@ -1,54 +1,67 @@
 package org.example.model;
 
 import jakarta.persistence.*;
-import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "orders") // Указываем имя таблицы
-public class Order implements Serializable {
+@Table(name = "`order`") // Экранируем имя таблицы
+public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID) // Автоматическая генерация UUID
-    private String id; // Уникальный идентификатор заказа
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY) // Связь "многие к одному" с Clothes
-    @JoinColumn(name = "clothes_id", nullable = false)
-    private Clothes clothes;
+    private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY) // Связь "многие к одному" с Customer
+    private double totalPrice;
+
+    private LocalDateTime orderDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
-    @Column(name = "order_date", nullable = false)
-    private LocalDate orderDate;
+    // Конструкторы
+    public Order() {}
 
-    // Конструктор
-    public Order(Clothes clothes, Customer customer, LocalDate orderDate) {
-        this.clothes = clothes;
-        this.customer = customer;
+    public Order(String description, double totalPrice, LocalDateTime orderDate, Customer customer) {
+        this.description = description;
+        this.totalPrice = totalPrice;
         this.orderDate = orderDate;
-    }
-
-    // Конструктор без параметров
-    public Order() {
+        this.customer = customer;
     }
 
     // Геттеры и сеттеры
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Clothes getClothes() {
-        return clothes;
+    public String getDescription() {
+        return description;
     }
 
-    public void setClothes(Clothes clothes) {
-        this.clothes = clothes;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public LocalDateTime getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(LocalDateTime orderDate) {
+        this.orderDate = orderDate;
     }
 
     public Customer getCustomer() {
@@ -59,11 +72,14 @@ public class Order implements Serializable {
         this.customer = customer;
     }
 
-    public LocalDate getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(LocalDate orderDate) {
-        this.orderDate = orderDate;
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", totalPrice=" + totalPrice +
+                ", orderDate=" + orderDate +
+                ", customerId=" + (customer != null ? customer.getId() : "null") +
+                '}';
     }
 }
