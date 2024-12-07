@@ -4,6 +4,7 @@ import org.example.interfaces.Input;
 import org.example.interfaces.Service;
 import org.example.model.Clothes;
 import org.example.model.Customer;
+import org.example.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -20,6 +21,10 @@ public class App implements CommandLineRunner {
 
 	@Autowired
 	private Service<Customer> customerService; // Добавляем customerService
+
+	@Autowired
+	private OrderService orderService; // Инжектируем OrderService
+
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -38,6 +43,7 @@ public class App implements CommandLineRunner {
 			System.out.println("7. Редактировать клиента");
 			System.out.println("8. Удалить клиента");
 			System.out.println("9. Оформить заказ");
+			System.out.println("10. Список заказов");
 
 			System.out.print("Введите номер задачи: ");
 			int task = Integer.parseInt(input.getString());
@@ -130,6 +136,21 @@ public class App implements CommandLineRunner {
 						System.out.println("Клиент с таким ID не найден.");
 					}
 					break;
+				case 10:
+					System.out.println("Введите 0, чтобы увидеть все заказы, или введите ID клиента, чтобы увидеть его заказы:");
+					Long selectedCustomerId = Long.parseLong(input.getString());
+
+					if (selectedCustomerId == 0) {
+						
+						orderService.printAllOrders();
+					} else {
+
+						orderService.printOrdersByCustomer(selectedCustomerId);
+					}
+					break;
+
+
+
 
 
 				default:

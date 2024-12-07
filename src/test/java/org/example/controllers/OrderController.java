@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -32,5 +33,11 @@ public class OrderController {
     @GetMapping("/customer/{customerId}")
     public List<Order> getOrdersByCustomer(@PathVariable Long customerId) {
         return orderService.getOrdersByCustomer(customerId);
+    }
+
+    // Получение всех заказов с информацией о клиентах
+    @GetMapping("/with-customer-details")
+    public List<Map<String, Object>> getOrdersWithCustomerDetails(@RequestParam Long customerId) {
+        return orderService.getOrdersWithCustomerDetails(customerId);
     }
 }

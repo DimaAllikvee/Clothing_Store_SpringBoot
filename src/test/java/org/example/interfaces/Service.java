@@ -11,7 +11,7 @@ public interface Service<T> {
     boolean print();
     List<T> list();
 
-    // Новый метод для оформления заказа
+
     default boolean placeOrder(T entity) {
         throw new UnsupportedOperationException("Метод placeOrder не реализован");
     }
