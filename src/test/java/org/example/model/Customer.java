@@ -13,6 +13,7 @@ public class Customer {
 
     private String firstName;
     private String lastName;
+    private double balance;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
@@ -32,6 +33,7 @@ public class Customer {
     public Customer(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.balance = 0.0;
     }
 
     // Геттеры и сеттеры
@@ -75,12 +77,21 @@ public class Customer {
         this.orders = orders;
     }
 
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
     @Override
     public String toString() {
         return "Customer{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", balance=" + balance +
                 ", clothes=" + clothes +
                 ", orders=" + orders +
                 '}';

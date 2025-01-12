@@ -1,9 +1,11 @@
 package org.example.services;
 
+import org.example.model.Clothes;
 import org.example.model.Customer;
 import org.example.model.Order;
-import org.example.interfaces.OrderRepository;
+import org.example.interfaces.ClothesRepository;
 import org.example.interfaces.CustomerRepository;
+import org.example.interfaces.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,25 +21,47 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;
+    private final ClothesRepository clothesRepository;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, CustomerRepository customerRepository) {
+    public OrderService(OrderRepository orderRepository, CustomerRepository customerRepository, ClothesRepository clothesRepository) {
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
+        this.clothesRepository = clothesRepository;
     }
 
     @Transactional
-    public boolean placeOrder(Long customerId, Order order) {
+    public boolean placeOrder(Long customerId, Order order, Long clothesId) {
         Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
+        Optional<Clothes> optionalClothes = clothesRepository.findById(clothesId);
 
         if (optionalCustomer.isEmpty()) {
             System.out.println("Ошибка: Клиент с ID " + customerId + " не найден.");
             return false;
         }
 
+        if (optionalClothes.isEmpty()) {
+            System.out.println("Ошибка: Товар с ID " + clothesId + " не найден.");
+            return false;
+        }
+
+        Clothes clothes = optionalClothes.get();
+        if (clothes.getQuantity() <= 0) {
+            System.out.println("Ошибка: Товара " + clothes.getName() + " нет в наличии.");
+            return false;
+        }
+
         Customer customer = optionalCustomer.get();
         order.setCustomer(customer);
         order.setOrderDate(java.time.LocalDateTime.now());
+        order.setTotalPrice(clothes.getPrice());
+        order.setDescription("Покупка товара: " + clothes.getName());
+
+        // Уменьшаем количество товара
+        clothes.setQuantity(clothes.getQuantity() - 1);
+        clothesRepository.save(clothes);
+
+        // Сохраняем заказ
         orderRepository.save(order);
 
         System.out.println("Заказ успешно оформлен для клиента: " + customer.getFirstName() + " " + customer.getLastName());
@@ -114,7 +138,6 @@ public class OrderService {
                     order.getOrderDate());
         }
     }
-
 
     @Transactional(readOnly = true)
     public List<Map<String, Object>> getOrdersWithCustomerDetails(Long customerId) {

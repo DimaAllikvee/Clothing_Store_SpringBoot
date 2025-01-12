@@ -29,7 +29,9 @@ public class CustomerAppHelper implements AppHelper<Customer> {
             String firstName = input.getString();
             System.out.print("Введите фамилию клиента: ");
             String lastName = input.getString();
-            return new Customer(firstName, lastName);
+            System.out.print("Введите баланс клиента: ");
+            double balance = Double.parseDouble(input.getString());
+            return new Customer(firstName, lastName, balance); // Учитываем баланс
         } catch (Exception e) {
             System.out.println("Ошибка при создании клиента: " + e.getMessage());
             return null;
@@ -45,12 +47,12 @@ public class CustomerAppHelper implements AppHelper<Customer> {
 
         for (int i = 0; i < customerList.size(); i++) {
             Customer customer = customerList.get(i);
-            System.out.printf("%d. Имя: %s, Фамилия: %s%n",
+            System.out.printf("%d. Имя: %s, Фамилия: %s, Баланс: %.2f%n",
                     i + 1,
                     customer.getFirstName(),
-                    customer.getLastName());
+                    customer.getLastName(),
+                    customer.getBalance()); // Отображение баланса
         }
         return true;
     }
 }
-

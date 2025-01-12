@@ -52,7 +52,6 @@ public class ClothingService implements Service<Clothes> {
 
         return clothesRepository.findById(clothes.getId()).map(existingClothes -> {
             try {
-                // Обновляем поля существующей одежды
                 System.out.println("Редактирование одежды:");
                 System.out.print("Введите новое название (текущее: " + existingClothes.getName() + "): ");
                 String newName = clothingAppHelper.getInput().getString();
@@ -76,7 +75,12 @@ public class ClothingService implements Service<Clothes> {
                     existingClothes.setPrice(Double.parseDouble(newPrice));
                 }
 
-                // Сохраняем обновленную одежду
+                System.out.print("Введите новое количество одежды (текущее: " + existingClothes.getQuantity() + "): ");
+                String newQuantity = clothingAppHelper.getInput().getString();
+                if (!newQuantity.isEmpty()) {
+                    existingClothes.setQuantity(Integer.parseInt(newQuantity));
+                }
+
                 clothesRepository.save(existingClothes);
                 System.out.println("Одежда успешно обновлена: " + existingClothes);
                 return true;

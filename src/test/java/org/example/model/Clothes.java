@@ -16,6 +16,7 @@ public class Clothes {
     private String size; // Размер одежды (например, S, M, L, XL)
     private String color; // Цвет одежды
     private double price; // Цена одежды
+    private int quantity; // Количество одежды
 
 
     @ManyToMany(mappedBy = "clothes")
@@ -31,6 +32,7 @@ public class Clothes {
         this.size = size;
         this.color = color;
         this.price = price;
+        this.quantity = quantity;
     }
 
     // Геттеры и сеттеры
@@ -82,6 +84,14 @@ public class Clothes {
         this.price = price;
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
 
 
     public List<Customer> getCustomers() {
@@ -101,6 +111,7 @@ public class Clothes {
                 ", size='" + size + '\'' +
                 ", color='" + color + '\'' +
                 ", price=" + price +
+                ", quantity=" + quantity +
                 '}';
     }
 }

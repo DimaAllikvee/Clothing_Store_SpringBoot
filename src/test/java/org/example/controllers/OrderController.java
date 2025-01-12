@@ -20,9 +20,9 @@ public class OrderController {
     }
 
     // Оформление заказа на клиента
-    @PostMapping("/customer/{customerId}")
-    public String placeOrder(@PathVariable Long customerId, @RequestBody Order order) {
-        if (orderService.placeOrder(customerId, order)) {
+    @PostMapping("/customer/{customerId}/clothes/{clothesId}")
+    public String placeOrder(@PathVariable Long customerId, @PathVariable Long clothesId, @RequestBody Order order) {
+        if (orderService.placeOrder(customerId, order, clothesId)) {
             return "Заказ успешно оформлен для клиента с ID " + customerId;
         } else {
             return "Ошибка: Заказ не удалось оформить.";

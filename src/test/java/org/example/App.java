@@ -141,7 +141,7 @@ public class App implements CommandLineRunner {
 					Long selectedCustomerId = Long.parseLong(input.getString());
 
 					if (selectedCustomerId == 0) {
-						
+
 						orderService.printAllOrders();
 					} else {
 

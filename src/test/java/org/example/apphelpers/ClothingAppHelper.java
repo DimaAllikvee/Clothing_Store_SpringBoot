@@ -38,14 +38,19 @@ public class ClothingAppHelper implements AppHelper<Clothes> {
             String color = input.getString();
             System.out.print("Введите цену одежды: ");
             double price = Double.parseDouble(input.getString());
+            System.out.print("Введите количество одежды: ");
+            int quantity = Integer.parseInt(input.getString());
 
-            // Создаем и возвращаем объект Clothes
-            return new Clothes(name, type, size, color, price);
+            // Создаем и возвращаем объект Clothes с количеством
+            Clothes clothes = new Clothes(name, type, size, color, price);
+            clothes.setQuantity(quantity);
+            return clothes;
         } catch (Exception e) {
             System.out.println("Ошибка при создании одежды: " + e.getMessage());
             return null;
         }
     }
+
 
     /**
      * Метод для отображения списка одежды.
@@ -59,14 +64,16 @@ public class ClothingAppHelper implements AppHelper<Clothes> {
 
         for (int i = 0; i < clothesList.size(); i++) {
             Clothes clothes = clothesList.get(i);
-            System.out.printf("%d. Название: %s, Тип: %s, Размер: %s, Цвет: %s, Цена: $%.2f%n",
+            System.out.printf("%d. Название: %s, Тип: %s, Размер: %s, Цвет: %s, Цена: $%.2f, Количество: %d%n",
                     i + 1,
                     clothes.getName(),
                     clothes.getType(),
                     clothes.getSize(),
                     clothes.getColor(),
-                    clothes.getPrice());
+                    clothes.getPrice(),
+                    clothes.getQuantity());
         }
         return true;
     }
 }
+
