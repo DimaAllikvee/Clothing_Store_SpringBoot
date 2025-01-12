@@ -128,7 +128,7 @@ public class App implements CommandLineRunner {
 					Customer customerForOrder = customerService.findById(customerIdForOrder);
 					if (customerForOrder != null) {
 						if (customerService.placeOrder(customerForOrder)) {
-							System.out.println("Заказ успешно оформлен.");
+							System.out.println("");
 						} else {
 							System.out.println("Заказ оформить не удалось.");
 						}

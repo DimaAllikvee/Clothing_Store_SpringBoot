@@ -61,6 +61,7 @@ public class CustomerService implements Service<Customer> {
             try {
                 // Обновляем поля существующего клиента
                 System.out.println("Редактирование клиента:");
+
                 System.out.print("Введите новое имя (текущее: " + existingCustomer.getFirstName() + "): ");
                 String newFirstName = customerAppHelper.getInput().getString();
                 existingCustomer.setFirstName(newFirstName.isEmpty() ? existingCustomer.getFirstName() : newFirstName);
@@ -69,12 +70,19 @@ public class CustomerService implements Service<Customer> {
                 String newLastName = customerAppHelper.getInput().getString();
                 existingCustomer.setLastName(newLastName.isEmpty() ? existingCustomer.getLastName() : newLastName);
 
-                // Сохраняем обновлённого клиента
+                System.out.print("Введите новый баланс (текущий: " + existingCustomer.getBalance() + "): ");
+                String newBalanceInput = customerAppHelper.getInput().getString();
+                if (!newBalanceInput.isEmpty()) {
+                    double newBalance = Double.parseDouble(newBalanceInput);
+                    existingCustomer.setBalance(newBalance);
+                }
+
+                // Сохраняем обновленного клиента
                 customerRepository.save(existingCustomer);
-                System.out.println("Клиент успешно обновлён: " + existingCustomer);
+                System.out.println("Ошибка при редактировании клиента: " + existingCustomer);
                 return true;
             } catch (Exception e) {
-                System.out.println("Ошибка при редактировании клиента: " + e.getMessage());
+                System.out.println("Клиент успешно обновлён: " + e.getMessage());
                 return false;
             }
         }).orElseGet(() -> {
@@ -82,6 +90,7 @@ public class CustomerService implements Service<Customer> {
             return false;
         });
     }
+
 
     @Override
     public boolean remove(Long id) {

@@ -30,10 +30,10 @@ public class Customer {
     // Конструкторы
     public Customer() {}
 
-    public Customer(String firstName, String lastName) {
+    public Customer(String firstName, String lastName, double balance) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.balance = 0.0;
+        this.balance = balance;
     }
 
     // Геттеры и сеттеры
