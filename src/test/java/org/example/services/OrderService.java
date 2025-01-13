@@ -46,27 +46,40 @@ public class OrderService {
         }
 
         Clothes clothes = optionalClothes.get();
+        Customer customer = optionalCustomer.get();
+
+        // Проверка наличия товара
         if (clothes.getQuantity() <= 0) {
             System.out.println("Ошибка: Товара " + clothes.getName() + " нет в наличии.");
             return false;
         }
 
-        Customer customer = optionalCustomer.get();
+        // Проверка баланса клиента
+        if (customer.getBalance() < clothes.getPrice()) {
+            System.out.println("Ошибка: У клиента недостаточно средств для покупки товара.");
+            return false;
+        }
+
+        // Обновляем данные клиента и товара
+        customer.setBalance(customer.getBalance() - clothes.getPrice());
+        clothes.setQuantity(clothes.getQuantity() - 1);
+
+        // Сохраняем изменения в базе данных
+        customerRepository.save(customer);
+        clothesRepository.save(clothes);
+
+        // Настройка и сохранение заказа
         order.setCustomer(customer);
         order.setOrderDate(java.time.LocalDateTime.now());
         order.setTotalPrice(clothes.getPrice());
         order.setDescription("Покупка товара: " + clothes.getName());
 
-        // Уменьшаем количество товара
-        clothes.setQuantity(clothes.getQuantity() - 1);
-        clothesRepository.save(clothes);
-
-        // Сохраняем заказ
         orderRepository.save(order);
 
         System.out.println("Заказ успешно оформлен для клиента: " + customer.getFirstName() + " " + customer.getLastName());
         return true;
     }
+
 
     @Transactional(readOnly = true)
     public List<Order> getOrdersByCustomer(Long customerId) {

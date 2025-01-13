@@ -2,6 +2,7 @@ package org.example.apphelpers;
 
 import org.example.interfaces.AppHelper;
 import org.example.interfaces.Input;
+import org.example.model.Clothes;
 import org.example.model.Customer;
 import org.example.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,10 @@ public class OrderAppHelper implements AppHelper<Order> {
      * @param customer Клиент, оформляющий заказ
      * @return Созданный объект Order
      */
-    public Order create(Customer customer) {
+    public Order create(Customer customer, Clothes clothes) {
         try {
             System.out.println("Оформление нового заказа для клиента: " + customer.getFirstName() + " " + customer.getLastName());
+            System.out.println("Товар: " + clothes.getName() + ", Цена: " + clothes.getPrice());
 
             System.out.print("Введите описание заказа: ");
             String description = input.getString();
@@ -37,7 +39,7 @@ public class OrderAppHelper implements AppHelper<Order> {
             double totalPrice = Double.parseDouble(input.getString());
 
             // Создаём заказ с текущей датой и временем
-            return new Order(description, totalPrice, LocalDateTime.now(), customer);
+            return new Order("Покупка товара: " + clothes.getName(), clothes.getPrice(), LocalDateTime.now(), customer);
         } catch (Exception e) {
             System.out.println("Ошибка при создании заказа: " + e.getMessage());
             return null;

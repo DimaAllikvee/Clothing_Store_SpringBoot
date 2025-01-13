@@ -4,6 +4,7 @@ import org.example.interfaces.Input;
 import org.example.interfaces.Service;
 import org.example.model.Clothes;
 import org.example.model.Customer;
+import org.example.model.Order;
 import org.example.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -121,21 +122,32 @@ public class App implements CommandLineRunner {
 						System.out.println("Не удалось удалить клиента. Убедитесь, что ID корректен.");
 					}
 					break;
-				case 9:
+				case 9: // Оформление заказа
 					customerService.print();
 					System.out.print("Введите ID клиента для оформления заказа: ");
 					Long customerIdForOrder = Long.parseLong(input.getString());
 					Customer customerForOrder = customerService.findById(customerIdForOrder);
+
 					if (customerForOrder != null) {
-						if (customerService.placeOrder(customerForOrder)) {
-							System.out.println("");
+						clothingService.print();
+						System.out.print("Введите ID товара для покупки: ");
+						Long clothesId = Long.parseLong(input.getString());
+
+
+						Order order = new Order();
+
+						// Оформляем заказ через OrderService
+						if (orderService.placeOrder(customerIdForOrder, order, clothesId)) {
+							System.out.println("Заказ успешно оформлен для клиента: " + customerForOrder.getFirstName() + " " + customerForOrder.getLastName());
+
 						} else {
-							System.out.println("Заказ оформить не удалось.");
+							System.out.println("Ошибка: Заказ оформить не удалось. Проверьте наличие товара и баланс клиента.");
 						}
 					} else {
-						System.out.println("Клиент с таким ID не найден.");
+						System.out.println("Ошибка: Клиент с таким ID не найден.");
 					}
 					break;
+
 				case 10:
 					System.out.println("Введите 0, чтобы увидеть все заказы, или введите ID клиента, чтобы увидеть его заказы:");
 					Long selectedCustomerId = Long.parseLong(input.getString());
