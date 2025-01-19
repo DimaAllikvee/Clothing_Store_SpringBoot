@@ -15,8 +15,8 @@ public class Clothes {
     private String type; // Тип одежды (например, футболка, куртка)
     private String size; // Размер одежды (например, S, M, L, XL)
     private String color; // Цвет одежды
-    private double price; // Цена одежды
-    private int quantity; // Количество одежды
+    private double price;
+    private int quantity; 
 
 
     @ManyToMany(mappedBy = "clothes")
